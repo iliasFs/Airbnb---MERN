@@ -11,13 +11,19 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
 
   //request to API
-  const registerUser = (event) => {
+  const registerUser = async (event) => {
     event.preventDefault();
-    axios.post("/register", {
-      name,
-      email,
-      password,
-    });
+
+    try {
+      await axios.post("/register", {
+        name,
+        email,
+        password,
+      });
+      alert("Registration succesful. Now you can Log in");
+    } catch {
+      alert("registration failed. The user already exist");
+    }
   };
 
   return (

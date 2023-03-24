@@ -7,17 +7,19 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const User = require("./models/user.js");
 const bcrypt = require("bcryptjs");
-const secret = bcrypt.genSalt(10);
+const secret = bcrypt.genSaltSync(10);
+const jwtSecret = "wertwertw45w5t54wgfrdgsfgs45";
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 app.use(express.json());
-app.use(cors());
-// app.use(
-//   cors({
-//     credentials: true,
-//     origin: "http://127.0.0.1:5173/",
-//   })
-// );
+
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://127.0.0.1:5173",
+  })
+);
 
 //connecting mongodb whit our api
 //we use .env file to encrypt passwords
@@ -28,13 +30,53 @@ app.get("/test", (req, res) => {
 });
 
 // we dont want to pass password as a text. We want to encrypt it first.So we install bcryptjs.
+//user creation is asynchronous operation. so async await
 app.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
-  const newUser = await User.create({
-    name,
+
+  try {
+    const newUser = await User.create({
+      name,
+      email,
+      password: bcrypt.hashSync(password, secret),
+    });
+    res.json(newUser);
+  } catch (e) {
+    res.status(422).json(e);
+  }
+});
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const userDoc = await User.findOne({
     email,
-    password: bcrypt.hashSync(password, secret),
   });
+
+  if (userDoc) {
+    const passwordOk = bcrypt.compareSync(password, userDoc.password);
+
+    if (passwordOk) {
+      //we sign a cookie
+      jwt.sign(
+        {
+          email: userDoc.email,
+          id: userDoc._id,
+        },
+        jwtSecret,
+        {},
+        (err, token) => {
+          if (err) throw err;
+
+          res.cookie("token", token).json("pass ok");
+        }
+      );
+    } else {
+      res.status(422).json("wrong password. Try again");
+    }
+  } else {
+    res.json("User not found");
+  }
 });
 
 app.listen(4000);
