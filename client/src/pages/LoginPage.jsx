@@ -12,7 +12,7 @@ const LoginPage = () => {
 
     try {
       await axios.post("/login", { email, password }, alert("Login succesful"));
-    } catch {
+    } catch (e) {
       alert("Please input your credentials correctly");
     }
   };

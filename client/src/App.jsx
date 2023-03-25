@@ -5,7 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://127.0.0.1:4000";
+axios.defaults.baseURL = "http://localhost:4000";
 //this is for  the cookie that we send to appear
 axios.defaults.withCredentials = true;
 function App() {
