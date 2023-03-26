@@ -9,14 +9,17 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
+
+  //we are using useContext to grab the setUser function in order to store the userinfo to our state
   const { setUser } = useContext(UserContext);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      //we are grabbing the user info from our api (userDoc)
+      
       const response = await axios.post("/login", { email, password });
+      //we are grabbing the user info from our api (userDoc)
       setUser(response.data);
       alert("Login succesful");
       setRedirect(true);

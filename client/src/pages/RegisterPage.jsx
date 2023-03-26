@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -9,6 +10,8 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
 
   const [password, setPassword] = useState("");
+
+  const [registered, setRegistered] = useState(false);
 
   //request to API
   const registerUser = async (event) => {
@@ -21,10 +24,15 @@ const RegisterPage = () => {
         password,
       });
       alert("Registration succesful. Now you can Log in");
+      setRegistered(true);
     } catch {
-      alert("registration failed. The user already exist");
+      alert("Registration failed. The user already exist");
     }
   };
+
+  if (registered) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <div className="mt-4 grow flex items-center justify-around">

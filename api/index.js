@@ -17,13 +17,14 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: "http://127.0.0.1:5173",
   })
 );
 
 //connecting mongodb whit our api
 //we use .env file to encrypt passwords
 mongoose.connect(process.env.MONGO_URL);
+
 
 app.get("/test", (req, res) => {
   res.json("Good");
@@ -35,12 +36,12 @@ app.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    const newUser = await User.create({
+    const userDoc = await User.create({
       name,
       email,
       password: bcrypt.hashSync(password, secret),
     });
-    res.json(newUser);
+    res.json(userDoc);
   } catch (e) {
     res.status(422).json(e);
   }
@@ -67,7 +68,6 @@ app.post("/login", async (req, res) => {
         {},
         (err, token) => {
           if (err) throw err;
-
           res.cookie("token", token).json(userDoc);
         }
       );
