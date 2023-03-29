@@ -10,9 +10,11 @@ const bcrypt = require("bcryptjs");
 const secret = bcrypt.genSaltSync(10);
 const jwtSecret = "wertwertw45w5t54wgfrdgsfgs45";
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(
   cors({
@@ -24,7 +26,6 @@ app.use(
 //connecting mongodb whit our api
 //we use .env file to encrypt passwords
 mongoose.connect(process.env.MONGO_URL);
-
 
 app.get("/test", (req, res) => {
   res.json("Good");
@@ -60,10 +61,7 @@ app.post("/login", async (req, res) => {
     if (passwordOk) {
       //we sign a cookie
       jwt.sign(
-        {
-          email: userDoc.email,
-          id: userDoc._id,
-        },
+        { name: userDoc.name, email: userDoc.email, id: userDoc._id },
         jwtSecret,
         {},
         (err, token) => {
@@ -77,6 +75,21 @@ app.post("/login", async (req, res) => {
   } else {
     res.json("User not found");
   }
+});
+
+//used into the User Context to grab user information
+app.get("/profile", (req, res) => {
+  //so we grab the cookie to get the userinformation
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, (error, user) => {
+      if (error) throw error;
+      res.json(user);
+    });
+  } else {
+    res.json(null);
+  }
+  res.json({ token });
 });
 
 app.listen(4000);
