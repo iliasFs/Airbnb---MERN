@@ -8,7 +8,7 @@ import { UserContextProvider } from "./contexts/UserContext";
 import AccountPage from "./pages/AccountPage";
 
 axios.defaults.baseURL = "http://127.0.0.1:4000";
-//this is for  the cookie that we send to appear
+//this is for  the cookie that we send to the api 
 axios.defaults.withCredentials = true;
 function App() {
   return (

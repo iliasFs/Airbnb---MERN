@@ -66,6 +66,8 @@ app.post("/login", async (req, res) => {
         {},
         (err, token) => {
           if (err) throw err;
+
+          //token coming from above jwt.sign
           res.cookie("token", token).json(userDoc);
         }
       );
@@ -79,12 +81,14 @@ app.post("/login", async (req, res) => {
 
 //used into the User Context to grab user information
 app.get("/profile", (req, res) => {
-  //so we grab the cookie to get the userinformation
+  //so we grab the cookie to get the user information
+  //to read cookies we need to install cookies parser -and of course the middlware
   const { token } = req.cookies;
   if (token) {
-    jwt.verify(token, jwtSecret, {}, (error, user) => {
+    //data is the user information
+    jwt.verify(token, jwtSecret, {}, (error, data) => {
       if (error) throw error;
-      res.json(user);
+      res.json(data);
     });
   } else {
     res.json(null);

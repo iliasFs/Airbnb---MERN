@@ -17,14 +17,13 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      
+      //we are grabbing the information of the logged-in user from our api (userDoc) and send it to the context so it can be available to all routes.
       const response = await axios.post("/login", { email, password });
-      //we are grabbing the user info from our api (userDoc)
       setUser(response.data);
       alert("Login succesful");
       setRedirect(true);
     } catch (e) {
-      alert("Please input your credentials correctly");
+      alert("Login failed. Please input your credentials correctly");
     }
   };
 
