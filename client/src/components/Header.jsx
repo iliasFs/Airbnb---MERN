@@ -79,7 +79,7 @@ const Header = () => {
             />
           </svg>
         </div>
-        {user && <div>{user.name.toUpperCase()}</div>}
+        {user && <div>{user.name}</div>}
       </Link>
     </header>
   );

@@ -93,7 +93,11 @@ app.get("/profile", (req, res) => {
   } else {
     res.json(null);
   }
-  res.json({ token });
+});
+
+//in order to logout we need to delete or reset our cookie
+app.post("/logout", (req, res) => {
+  res.cookie("token", "").json(true);
 });
 
 app.listen(4000);

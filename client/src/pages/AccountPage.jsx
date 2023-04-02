@@ -1,33 +1,69 @@
 import React from "react";
 import { UserContext } from "../contexts/UserContext";
-import { useContext } from "react";
-import { Navigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Navigate, useParams, Link } from "react-router-dom";
+import axios from "axios";
 
 const AccountPage = () => {
-  const { user, ready } = useContext(UserContext);
+  const { user, ready, setUser } = useContext(UserContext);
+  const [redirect, setRedirect] = useState(null);
+  let { subpage } = useParams();
+  if (subpage === undefined) {
+    subpage = "profile";
+  }
 
   //The thing here is that in the use context we have an async function that takes like 28ms to grab the user.So it goes into the if statement as if there is no user. This leads to throw us at login page every time. Thats why we need to user ready state.
 
   //if the user is still not fetched
+
+  async function logout() {
+    await axios.post("/logout");
+    setRedirect("/");
+    setUser(null);
+  }
+
   if (!ready) return "Loading...";
 
-  if (ready && !user) {
+  if (ready && !user && !redirect) {
     return <Navigate to={"/login"} />;
   }
+
+  function linkClasses(type = null) {
+    let classes = "py-2 px-6";
+    if (type === subpage) {
+      classes += " bg-primary text-white rounded-full";
+    }
+    return classes;
+  }
+
+  if (redirect) {
+    return <Navigate to={redirect} />;
+  }
+
   return (
     <div>
-      <nav className="w-full flex justify-center mt-8 gap-2">
-        <Link className="py-2 px-6 bg-primary text-white rounded-full" to={"/account"}>
+      <nav className="w-full flex justify-center mt-8 gap-2 mb-12">
+        <Link className={linkClasses("profile")} to={"/account"}>
           My Profile
         </Link>
-        <Link className="py-2 px-6" to={"/account/bookings"}>
+        <Link className={linkClasses("bookings")} to={"/account/bookings"}>
           My bookings
         </Link>
-        <Link className="py-2 px-6" to={"/account/places"}>
+        <Link className={linkClasses("places")} to={"/account/places"}>
           My accommodations
         </Link>
       </nav>
+      {subpage === "profile" && (
+        <div className="text-center flex flex-col gap-10 align-center justify-center max-w-lg mx-auto mt-[150px] font-bold">
+          Logged in as {user.name} ({user.email})<br />
+          <button
+            onClick={logout}
+            className="primary max-w-[150px] mt-2 mx-auto"
+          >
+            Log out
+          </button>
+        </div>
+      )}
     </div>
   );
 };
