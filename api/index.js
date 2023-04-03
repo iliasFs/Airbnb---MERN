@@ -12,6 +12,7 @@ const jwtSecret = "wertwertw45w5t54wgfrdgsfgs45";
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
+const multer = require("multer");
 require("dotenv").config();
 
 app.use(express.json());
@@ -114,6 +115,12 @@ app.post("/upload-by-link", async (req, res) => {
   });
 
   res.json(newName);
+});
+
+const photosMiddleware = multer({ dest: "uploads" });
+// we use package multer to upload.
+app.post("/upload", photosMiddleware.array("photos", 100), (res, req) => {
+  res.json(req.files);
 });
 
 app.listen(4000);
