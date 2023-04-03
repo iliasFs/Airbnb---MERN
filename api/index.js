@@ -11,11 +11,14 @@ const secret = bcrypt.genSaltSync(10);
 const jwtSecret = "wertwertw45w5t54wgfrdgsfgs45";
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const imageDownloader = require("image-downloader");
 require("dotenv").config();
 
 app.use(express.json());
 app.use(cookieParser());
 
+//middleware to display out photos in our browser
+app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
@@ -98,6 +101,19 @@ app.get("/profile", (req, res) => {
 //in order to logout we need to delete or reset our cookie
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json(true);
+});
+
+//upload the photos in theuploads folder. We will use a library called image-downloader witch we install.
+
+app.post("/upload-by-link", async (req, res) => {
+  const { link } = req.body;
+  const newName = "photo" + Date.now() + ".jpg";
+  await imageDownloader.image({
+    url: link,
+    dest: __dirname + "/uploads/" + newName,
+  });
+
+  res.json(newName);
 });
 
 app.listen(4000);

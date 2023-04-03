@@ -24,7 +24,7 @@ const Header = () => {
         <span className="font-bold text-xl">Airbnb</span>
       </Link>
 
-      <div className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 shadow shadow-gray-400">
+      <div className=" hidden sm:flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 shadow shadow-gray-400">
         <div>Anywhere</div>
         <div className="border border-l-[20px] border-gray-300 rotate-90" />
         <div>Any Week</div>

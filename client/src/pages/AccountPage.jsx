@@ -44,7 +44,7 @@ const AccountPage = () => {
   }
 
   return (
-    <div>
+    <div className="h-full">
       <nav className="w-full flex justify-center mt-8 gap-2 mb-12">
         <Link className={linkClasses("profile")} to={"/account"}>
           <svg
@@ -99,8 +99,10 @@ const AccountPage = () => {
         </Link>
       </nav>
       {subpage === "profile" && (
-        <div className="text-center flex flex-col gap-10 align-center justify-center max-w-lg mx-auto mt-[150px] font-bold">
-          Logged in as {user.name} ({user.email})<br />
+        <div className="text-center mt-48 flex flex-col gap-10 justify-center ">
+          <h2 className="text-3xl">
+            Logged in as {user.name} ({user.email})<br />
+          </h2>
           <button
             onClick={logout}
             className="primary max-w-[150px] mt-2 mx-auto"
