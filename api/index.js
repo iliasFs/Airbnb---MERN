@@ -13,6 +13,9 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
+
+//for renaming the files from upload(they are not in jpeg)
+const fs = require("fs");
 require("dotenv").config();
 
 app.use(express.json());
@@ -23,7 +26,7 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
-    origin: "http://127.0.0.1:5173",
+    origin: "http://127.0.0.1:5174",
   })
 );
 
@@ -108,6 +111,7 @@ app.post("/logout", (req, res) => {
 
 app.post("/upload-by-link", async (req, res) => {
   const { link } = req.body;
+  if (!link) return null;
   const newName = "photo" + Date.now() + ".jpg";
   await imageDownloader.image({
     url: link,
@@ -119,8 +123,21 @@ app.post("/upload-by-link", async (req, res) => {
 
 const photosMiddleware = multer({ dest: "uploads" });
 // we use package multer to upload.
-app.post("/upload", photosMiddleware.array("photos", 100), (res, req) => {
-  res.json(req.files);
+app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
+  const uploadedFiles = [];
+
+  for (let i = 0; i < req.files.length; i++) {
+    const { path, originalname } = req.files[i];
+    //we are trying to take the extensnion .webp and append it to the path
+    const parts = originalname.split(".");
+    const extension = parts[parts.length - 1];
+    const newPath = path + "." + extension;
+
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath.replace("uploads", ""));
+  }
+
+  res.json(uploadedFiles);
 });
 
 app.listen(4000);

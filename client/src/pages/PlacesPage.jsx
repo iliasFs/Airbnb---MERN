@@ -29,6 +29,29 @@ const PlacesPage = () => {
     setPhotoLink("");
   }
 
+  //We use the FormData object to easily gather and send data from an HTML form to a server. The FormData object allows you to create key/value pairs of form data, which can then be sent to the server using an HTTP request, such as fetch()
+  function uploadPhoto(event) {
+    const files = event.target.files;
+    const data = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+      data.append("photos", files[i]);
+    }
+
+    axios
+      .post("/upload", data, {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        const { data: filenames } = response;
+        setAddedPhotos((prev) => {
+          return [...prev, ...filenames];
+        });
+      });
+  }
+
   return (
     <div>
       {action !== "new" && (
@@ -82,9 +105,10 @@ const PlacesPage = () => {
             <p className="text-gray-400 text-sm">
               More equals better. Quality is important
             </p>
+
             <div className="flex justify-between gap-4">
               <input
-                className="max-w-[60%]"
+                className=""
                 type="text"
                 value={photoLink}
                 onChange={(e) => setPhotoLink(e.target.value)}
@@ -92,13 +116,20 @@ const PlacesPage = () => {
               />
               <button
                 onClick={addPhotoByLink}
-                className="rounded-2xl px-4 w-[30%]"
+                className="rounded-2xl px-4 py-2"
               >
                 Add photo
               </button>
             </div>
             <div className="grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-6">
-              <button className="border flex gap-1 justify-center items-center bg-transparent rounded-2xl p-8 md:text-2xl text-gray-600">
+              
+              <label className=" h-32 border flex gap-1 justify-center items-center bg-transparent rounded-2xl p-8 md:text-2xl text-gray-600 cursor-pointer">
+                <input
+                  type="file"
+                  multiple
+                  className="hidden"
+                  onChange={uploadPhoto}
+                />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -114,10 +145,10 @@ const PlacesPage = () => {
                   />
                 </svg>
                 Upload
-              </button>
+              </label>
               {addedPhotos.length > 0 &&
                 addedPhotos.map((link) => (
-                  <div>
+                  <div className="h-32 flex">
                     <img
                       w-full
                       h-full
