@@ -100,7 +100,7 @@ const AccountPage = () => {
       </nav>
       {subpage === "profile" && (
         <div className="text-center mt-48 flex flex-col gap-10 justify-center ">
-          <h2 className="text-3xl">
+          <h2 className="text-2xl">
             Logged in as {user.name} ({user.email})<br />
           </h2>
           <button

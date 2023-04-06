@@ -1,11 +1,22 @@
 import React from "react";
 
-const Perks = ({ selected, onChange }) => {
+const Perks = ({ perks, setPerks }) => {
+  function handleCheckBoxClick(event) {
+    //console.log(event.target.checked) -- true/false
+    //console.log(event.target.name) --name-wifi etc
+
+    const { checked, name } = event.target;
+    if (checked) {
+      setPerks([...perks, name]);
+    } else {
+      setPerks([...perks.filter((selectedName) => selectedName !== name)]);
+    }
+  }
   return (
     <>
       <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-          <input type="checkbox" />
+          <input type="checkbox" name="Wifi" onChange={handleCheckBoxClick} />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -21,10 +32,14 @@ const Perks = ({ selected, onChange }) => {
             />
           </svg>
 
-          <span>Wifi</span>
+          <span>WiFi</span>
         </label>
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            name="parking"
+            onChange={handleCheckBoxClick}
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -43,7 +58,7 @@ const Perks = ({ selected, onChange }) => {
           <span>Free Parking</span>
         </label>
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-          <input type="checkbox" />
+          <input type="checkbox" name="tv" onChange={handleCheckBoxClick} />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -62,7 +77,7 @@ const Perks = ({ selected, onChange }) => {
           <span>Tv</span>
         </label>
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-          <input type="checkbox" />
+          <input type="checkbox" name="radio" onChange={handleCheckBoxClick} />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -81,7 +96,7 @@ const Perks = ({ selected, onChange }) => {
           <span>Radio</span>
         </label>
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-          <input type="checkbox" />
+          <input type="checkbox" name="pets" onChange={handleCheckBoxClick} />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -100,7 +115,11 @@ const Perks = ({ selected, onChange }) => {
           <span>Pets</span>
         </label>
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            name="entrance"
+            onChange={handleCheckBoxClick}
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
