@@ -16,7 +16,12 @@ const Perks = ({ perks, setPerks }) => {
     <>
       <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-          <input type="checkbox" name="Wifi" onChange={handleCheckBoxClick} />
+          <input
+            type="checkbox"
+            checked={perks.includes("Wifi")}
+            name="Wifi"
+            onChange={handleCheckBoxClick}
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -37,6 +42,7 @@ const Perks = ({ perks, setPerks }) => {
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
           <input
             type="checkbox"
+            checked={perks.includes("parking")}
             name="parking"
             onChange={handleCheckBoxClick}
           />
@@ -58,7 +64,12 @@ const Perks = ({ perks, setPerks }) => {
           <span>Free Parking</span>
         </label>
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-          <input type="checkbox" name="tv" onChange={handleCheckBoxClick} />
+          <input
+            type="checkbox"
+            checked={perks.includes("tv")}
+            name="tv"
+            onChange={handleCheckBoxClick}
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -77,7 +88,12 @@ const Perks = ({ perks, setPerks }) => {
           <span>Tv</span>
         </label>
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-          <input type="checkbox" name="radio" onChange={handleCheckBoxClick} />
+          <input
+            type="checkbox"
+            checked={perks.includes("radio")}
+            name="radio"
+            onChange={handleCheckBoxClick}
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -96,7 +112,12 @@ const Perks = ({ perks, setPerks }) => {
           <span>Radio</span>
         </label>
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
-          <input type="checkbox" name="pets" onChange={handleCheckBoxClick} />
+          <input
+            type="checkbox"
+            checked={perks.includes("pets")}
+            name="pets"
+            onChange={handleCheckBoxClick}
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -117,6 +138,7 @@ const Perks = ({ perks, setPerks }) => {
         <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
           <input
             type="checkbox"
+            checked={perks.includes("entrance")}
             name="entrance"
             onChange={handleCheckBoxClick}
           />

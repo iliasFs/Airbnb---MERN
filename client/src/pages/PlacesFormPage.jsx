@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PhotoUploader from "../components/PhotoUploader";
 import Perks from "../components/Perks";
 import { Link, Navigate, useParams } from "react-router-dom";
@@ -22,7 +22,18 @@ const PlacesFormPage = () => {
 
   useEffect(() => {
     if (!id) return;
-    axios.get("/places/" +id);
+    axios.get("/places/" + id).then((response) => {
+      const { data } = response;
+      setTitle(data.title);
+      setAddress(data.address);
+      setAddedPhotos(data.photos);
+      setDescription(data.description);
+      setPerks(data.perks);
+      setExtraInfo(data.extraInfo);
+      setCheckIn(data.checkIn);
+      setCheckOut(data.checkOut);
+      setMaxGuests(data.maxGuests);
+    });
   }, [id]);
 
   //it will take a link from the state and then upload this photo to our server and it will return a link that will be inside our API server directory folder
@@ -60,8 +71,11 @@ const PlacesFormPage = () => {
         });
       });
   }
-  const addNewPlace = async (event) => {
+  const savePlace = async (event) => {
     event.preventDefault();
+
+    //
+    
     const placeData = {
       title,
       address,
@@ -73,7 +87,7 @@ const PlacesFormPage = () => {
       checkOut,
       maxGuests,
     };
-
+    //adds new places
     await axios.post("/places", placeData);
     setRedirect(true);
   };
@@ -85,7 +99,7 @@ const PlacesFormPage = () => {
   return (
     <div>
       <AccountNavigation />
-      <form onSubmit={addNewPlace}>
+      <form onSubmit={savePlace}>
         <h2 className="text-2xl mt-6 ">Title</h2>
         <p className="text-gray-400 text-sm">
           Title for your place. Smart and catchy
