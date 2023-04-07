@@ -2,6 +2,7 @@ import React from "react";
 
 const PhotoUploader = ({
   photoLink,
+  setPhotoLink,
   addPhotoByLink,
   uploadPhoto,
   addedPhotos,
@@ -53,7 +54,7 @@ const PhotoUploader = ({
           addedPhotos.map((link) => (
             <div key={link} className="h-32 flex">
               <img
-                className="rounded-2xl object-cover"
+                className="rounded-2xl object-cover h-full w-full"
                 src={"http://localhost:4000/uploads/" + link}
                 alt=""
               />

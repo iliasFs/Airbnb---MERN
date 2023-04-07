@@ -1,32 +1,15 @@
 import React from "react";
-import { UserContext } from "../contexts/UserContext";
-import { useContext, useState } from "react";
-import { Navigate, useParams, Link } from "react-router-dom";
-import axios from "axios";
-import PlacesPage from "./PlacesPage";
+import { Link, useLocation } from "react-router-dom";
 
-const AccountPage = () => {
-  const { user, ready, setUser } = useContext(UserContext);
-  const [redirect, setRedirect] = useState(null);
-  let { subpage } = useParams();
+const AccountNavigation = () => {
+  //
+  const { pathname } = useLocation();
+  //   console.log(location) - we extract the pathname and we can grap the second pram of the pathname wich will use to change colors in nav-links.
+
+  let subpage = pathname.split("/")?.[2];
+
   if (subpage === undefined) {
     subpage = "profile";
-  }
-
-  //The thing here is that in the use context we have an async function that takes like 28ms to grab the user.So it goes into the if statement as if there is no user. This leads to throw us at login page every time. Thats why we need to user ready state.
-
-  //if the user is still not fetched
-
-  async function logout() {
-    await axios.post("/logout");
-    setRedirect("/");
-    setUser(null);
-  }
-
-  if (!ready) return "Loading...";
-
-  if (ready && !user && !redirect) {
-    return <Navigate to={"/login"} />;
   }
 
   function linkClasses(type = null) {
@@ -39,12 +22,8 @@ const AccountPage = () => {
     return classes;
   }
 
-  if (redirect) {
-    return <Navigate to={redirect} />;
-  }
-
   return (
-    <div className="h-full">
+    <div>
       <nav className="w-full flex justify-center mt-8 gap-2 mb-12">
         <Link className={linkClasses("profile")} to={"/account"}>
           <svg
@@ -98,22 +77,8 @@ const AccountPage = () => {
           My places
         </Link>
       </nav>
-      {subpage === "profile" && (
-        <div className="text-center mt-48 flex flex-col gap-10 justify-center ">
-          <h2 className="text-2xl">
-            Logged in as {user.name} ({user.email})<br />
-          </h2>
-          <button
-            onClick={logout}
-            className="primary max-w-[150px] mt-2 mx-auto"
-          >
-            Log out
-          </button>
-        </div>
-      )}
-      {subpage === "places" && <PlacesPage />}
     </div>
   );
 };
 
-export default AccountPage;
+export default AccountNavigation;

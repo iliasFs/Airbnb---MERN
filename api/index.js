@@ -13,6 +13,7 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
 const multer = require("multer");
+const Place = require("./models/place.js");
 
 //for renaming the files from upload(they are not in jpeg)
 const fs = require("fs");
@@ -138,6 +139,44 @@ app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
   }
 
   res.json(uploadedFiles);
+});
+
+app.post("/places", (req, res) => {
+  //so we need to save to our database the new place we added.
+  const { token } = req.cookies;
+  const {
+    title,
+    address,
+    addedPhotos,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+  } = req.body;
+  jwt.verify(token, jwtSecret, {}, async (error, userData) => {
+    if (error) throw error;
+    const placeDoc = await Place.create({
+      //owner is the user loggen-in. so we grab information from our token above.
+      owner: userData.id,
+      title,
+      address,
+      addedPhotos,
+      description,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+    });
+    res.json(placeDoc);
+  });
+});
+
+app.get("/places", (req, rex) => {
+  //we need the user id first so...we grab it from token
+  const { token } = req.cookies;
 });
 
 app.listen(4000);
