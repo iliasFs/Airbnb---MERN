@@ -162,7 +162,7 @@ app.post("/places", (req, res) => {
       owner: userData.id,
       title,
       address,
-      addedPhotos,
+      photos: addedPhotos,
       description,
       perks,
       extraInfo,
@@ -174,9 +174,17 @@ app.post("/places", (req, res) => {
   });
 });
 
-app.get("/places", (req, rex) => {
+app.get("/places", (req, res) => {
   //we need the user id first so...we grab it from token
   const { token } = req.cookies;
+  //decrypting out token now
+
+  jwt.verify(token, jwtSecret, {}, async (error, userData) => {
+    if (error) throw error;
+
+    const { id } = userData;
+    res.json(await Place.find({ owner: id }));
+  });
 });
 
 app.listen(4000);

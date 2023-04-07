@@ -2,11 +2,12 @@ import React from "react";
 import { useState } from "react";
 import PhotoUploader from "../components/PhotoUploader";
 import Perks from "../components/Perks";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import AccountNavigation from "../components/AccountNavigation";
 import axios from "axios";
 
 const PlacesFormPage = () => {
+  const { id } = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
   const [addedPhotos, setAddedPhotos] = useState([]);
@@ -18,6 +19,11 @@ const PlacesFormPage = () => {
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+    axios.get("/places/" +id);
+  }, [id]);
 
   //it will take a link from the state and then upload this photo to our server and it will return a link that will be inside our API server directory folder
   async function addPhotoByLink(event) {
