@@ -75,7 +75,7 @@ const PlacesFormPage = () => {
     event.preventDefault();
 
     //
-    
+
     const placeData = {
       title,
       address,
