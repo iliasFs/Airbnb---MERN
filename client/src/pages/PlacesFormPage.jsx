@@ -19,6 +19,7 @@ const PlacesFormPage = () => {
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
+  const [price, setPrice] = useState(null);
 
   useEffect(() => {
     if (!id) return;
@@ -33,6 +34,7 @@ const PlacesFormPage = () => {
       setCheckIn(data.checkIn);
       setCheckOut(data.checkOut);
       setMaxGuests(data.maxGuests);
+      setPrice(data.price);
     });
   }, [id]);
 
@@ -46,6 +48,7 @@ const PlacesFormPage = () => {
     checkIn,
     checkOut,
     maxGuests,
+    price,
   };
 
   //it will take a link from the state and then upload this photo to our server and it will return a link that will be inside our API server directory folder
@@ -156,7 +159,7 @@ const PlacesFormPage = () => {
           add check in and out times, dont emmit the time window between guests
           for cleaning.
         </p>
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="mt-2 -mb-1">Check In time</h3>
             <input
@@ -180,6 +183,14 @@ const PlacesFormPage = () => {
             <input
               value={maxGuests}
               onChange={(e) => setMaxGuests(e.target.value)}
+              type="number"
+            />
+          </div>
+          <div>
+            <h3 className="mt-2">Price Per Night</h3>
+            <input
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
               type="number"
             />
           </div>
