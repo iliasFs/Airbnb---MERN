@@ -126,7 +126,6 @@ const photosMiddleware = multer({ dest: "uploads" });
 // we use package multer to upload.
 app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
   const uploadedFiles = [];
-
   for (let i = 0; i < req.files.length; i++) {
     const { path, originalname } = req.files[i];
     //we are trying to take the extensnion .webp and append it to the path
@@ -190,6 +189,43 @@ app.get("/places", (req, res) => {
 app.get("/places/:id", async (req, res) => {
   const { id } = req.params;
   res.json(await Place.findById(id));
+});
+
+app.put("/places", async (req, res) => {
+  //we also need to verify the user through token verification.
+  const { token } = req.cookies;
+  const {
+    id,
+    title,
+    address,
+    addedPhotos,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+  } = req.body;
+
+  jwt.verify(token, jwtSecret, {}, async (error, userData) => {
+    if (error) throw error;
+    const placeDoc = await Place.findById(id);
+    if (userData.id === placeDoc.owner.toString()) {
+      placeDoc.set({
+        title,
+        address,
+        photos: addedPhotos,
+        description,
+        perks,
+        extraInfo,
+        checkIn,
+        checkOut,
+        maxGuests,
+      });
+      await placeDoc.save();
+      res.json("Ok");
+    }
+  });
 });
 
 app.listen(4000);

@@ -12,6 +12,7 @@ const PlacesPage = () => {
     });
   }, []);
 
+  console.log(places);
   return (
     <div>
       <AccountNavigation />
@@ -37,17 +38,21 @@ const PlacesPage = () => {
           Add place
         </Link>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 p-4">
         {places.length > 0 &&
           places.map((place) => (
             <Link
               to={`/account/places/${place._id}`}
-              className="flex cursor-pointer gap-4 bg-gray-200 p-4 rounded-2xl "
+              className="flex cursor-pointer gap-4 border-l-4  border-primary p-4  "
               key={place._id}
             >
-              <div className="w-32 h-32 bg-gray-300 grow shrink-0">
+              <div className="flex w-32 h-32 grow shrink-0">
                 {place.photos.length > 0 && (
-                  <img src={place.photos[0]} alt="" />
+                  <img
+                  className="object-cover rounded-2xl"
+                    src={"http://localhost:4000/uploads" + place.photos[0]}
+                    alt=""
+                  />
                 )}
               </div>
               <div>

@@ -14,7 +14,7 @@ const PhotoUploader = ({
         More equals better. Quality is important
       </p>
 
-      <div className="flex justify-between gap-4">
+      <div className="flex justify-between items-center gap-4">
         <input
           className=""
           type="text"
@@ -22,11 +22,16 @@ const PhotoUploader = ({
           onChange={(e) => setPhotoLink(e.target.value)}
           placeholder="Add using a link ...jpg"
         />
-        <button onClick={addPhotoByLink} className="rounded-2xl px-4 py-2">
-          Add photo
-        </button>
+        <div className="w-[100px]">
+          <button
+            onClick={addPhotoByLink}
+            className="rounded-2xl text-center px-2 xl:py-4"
+          >
+            Add photo
+          </button>
+        </div>
       </div>
-      <div className="grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-6">
+      <div className="grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-6 my-2">
         <label className=" h-32 border flex gap-1 justify-center items-center bg-transparent rounded-2xl p-8 md:text-2xl text-gray-600 cursor-pointer">
           <input
             type="file"

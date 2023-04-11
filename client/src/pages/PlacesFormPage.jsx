@@ -36,6 +36,18 @@ const PlacesFormPage = () => {
     });
   }, [id]);
 
+  const placeData = {
+    title,
+    address,
+    addedPhotos,
+    description,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+  };
+
   //it will take a link from the state and then upload this photo to our server and it will return a link that will be inside our API server directory folder
   async function addPhotoByLink(event) {
     event.preventDefault();
@@ -73,23 +85,17 @@ const PlacesFormPage = () => {
   }
   const savePlace = async (event) => {
     event.preventDefault();
-
+    //if there is a place already then we actually want to update it so we need a put request and an extra id in the placeData object.
+    if (id) {
+      //adds new places
+      await axios.put("/places", { id, ...placeData });
+      setRedirect(true);
+    } else {
+      //adds new places
+      await axios.post("/places", placeData);
+      setRedirect(true);
+    }
     //
-
-    const placeData = {
-      title,
-      address,
-      addedPhotos,
-      description,
-      perks,
-      extraInfo,
-      checkIn,
-      checkOut,
-      maxGuests,
-    };
-    //adds new places
-    await axios.post("/places", placeData);
-    setRedirect(true);
   };
 
   if (redirect) {
