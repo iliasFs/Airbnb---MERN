@@ -132,6 +132,7 @@ const PlacesFormPage = () => {
           addPhotoByLink={addPhotoByLink}
           uploadPhoto={uploadPhoto}
           addedPhotos={addedPhotos}
+          setAddedPhotos={setAddedPhotos}
         />
         <h2 className="text-2xl mt-6 ">Descripiton</h2>
         <p className="text-gray-400 text-sm">Describe the place</p>

@@ -173,7 +173,7 @@ app.post("/places", (req, res) => {
   });
 });
 
-app.get("/places", (req, res) => {
+app.get("/user-places", (req, res) => {
   //we need the user id first so...we grab it from token
   const { token } = req.cookies;
   //decrypting out token now
@@ -226,6 +226,10 @@ app.put("/places", async (req, res) => {
       res.json("Ok");
     }
   });
+});
+
+app.get("/places", async (req, res) => {
+  res.json(await Place.find());
 });
 
 app.listen(4000);
