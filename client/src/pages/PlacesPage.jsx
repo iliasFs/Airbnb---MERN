@@ -43,19 +43,19 @@ const PlacesPage = () => {
           places.map((place) => (
             <Link
               to={`/account/places/${place._id}`}
-              className="flex cursor-pointer gap-4 border-l-4  border-primary p-4  "
+              className="flex mt-8 cursor-pointer gap-4 border-l-4  border-primary rounded-lg p-4  "
               key={place._id}
             >
-              <div className="flex w-32 h-32 grow shrink-0">
+              <div className="flex w-52 h-48 shrink-0">
                 {place.photos.length > 0 && (
                   <img
-                    className="object-cover rounded-2xl"
+                    className="object-cover rounded-2xl w-full h-full"
                     src={"http://localhost:4000/uploads" + place.photos[0]}
                     alt=""
                   />
                 )}
               </div>
-              <div>
+              <div className="max-w-[850px]">
                 <h2 className="text-xl">{place.title}</h2>
                 <p className="text-sm mt-2 ">{place.description}</p>
               </div>
